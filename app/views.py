@@ -17,6 +17,10 @@ from app        import app, lm, db, bc
 from app.models import User
 from app.forms  import LoginForm, RegisterForm
 
+# From old dashboard
+import os
+import simplejson as json
+
 # provide login manager with load_user callback
 @lm.user_loader
 def load_user(user_id):
@@ -110,7 +114,7 @@ def login():
                             content=render_template( 'pages/login.html', form=form, msg=msg ) )
 
 # App main route + generic routing
-@app.route('/', defaults={'path': 'index.html'})
+@app.route('/', defaults={'path': 'tables2.html'})
 @app.route('/<path>')
 def index(path):
 
@@ -133,3 +137,90 @@ def index(path):
 @app.route('/sitemap.xml')
 def sitemap():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'sitemap.xml')
+
+
+# FROM OLD DASHBOARD
+config = None
+
+with open('config.json') as f:
+    config = json.load(f)
+    print("config          :", config)
+    print("config['device']:", config['device'])
+    print(config['device']['Intel Edison']['image'][0])
+
+def getJsonDeviceName(name):
+    if (name == "edison"):
+        return "Intel Edison"
+    elif (name == "raspberry"):
+        return "Raspberry"
+    elif (name == "nano"):
+        return "Nvidia Jetson Nano"
+
+def getJsonImageName(name):
+    if (name == "azure-rasp_main"):
+        return "Raspberry Azure"
+    elif (name == "simple-mqtt_main"):
+        return "Raspberry ThingsBoard"
+    elif (name == "none-raspberry_main"):
+        return "Raspberry NoImage"
+    elif (name == "azure-edison_main"):
+        return "Edison Azure"
+    elif (name == "simple-mqtt-edison_main"):
+        return "Edison ThingsBoard"
+    elif (name == "none-edison_main"):
+        return "Edison NoImage"
+    elif (name == "azure-nano_main"):
+        return "Nano Azure Simulation"
+    elif (name == "simple-mqtt-nano_main"):
+        return "Nano ThingsBoard Simulation"
+    elif (name == "none-nano_main"):
+        return "Nano NoImage"
+    elif (name == "azure-nano-yocto_main"):
+        return "Nano Azure W/Temp.Sensor"
+
+def createResponse(data):
+    print ("createResponse",data)
+    response = app.response_class(
+            response=json.dumps(data, use_decimal=True),
+            status=200,
+            mimetype='application/json'
+            )
+    print ("RESPONSE", response)
+    return response
+
+@app.route('/device-status', methods=['GET'])
+def deviceStatus():
+    stream = os.popen("balena apps")
+    output = stream.read()
+    content = [line.split() for line in output.splitlines()]
+    content.pop(0)
+    return createResponse(content)
+
+@app.route('/device-image', methods=['GET'])
+def deviceImage():
+    config={}
+    with open('config.json') as f:
+        config = json.load(f)
+    return createResponse(config)
+
+@app.route('/device-deploy/<device>/<image>',methods=['POST','GET'])
+def deviceDeploy(device=None,image=None):
+    print ("device:", device)
+    print ("image :", image)
+    command = "balena deploy " + device + " " +image
+    print (command)
+    stream = os.popen(command)
+    output = stream.read()
+    if "succeeded!" in output:
+        print("deviceDeploy succeeded!")
+        deviceNameJson = getJsonDeviceName(device)
+        imageNameJson  = getJsonImageName(image)
+        config['device'][deviceNameJson]['deployedImage'] = imageNameJson
+        with open('config.json', 'w') as f:
+            json.dump(config, f)
+        print("CONFIG NEW:", config)
+        return createResponse(config)
+    else:
+        print("deviceDeploy failed!")
+        return createResponse(1)
+

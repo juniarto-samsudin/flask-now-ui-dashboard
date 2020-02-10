@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>I3 Device Monitor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+         $(document).ready(function(){
+		$("#Deploy").click(function(){
+			console.log("Deploy Clicked!");
+			$("#Deploy").attr("disabled", true);
+			console.log($("#DeviceSelect option:selected").val());
+			var device = $("#DeviceSelect option:selected").val();
+			var image  = $("#ImageSelect option:selected").val();
+			//myurl="http://vaultsonchain.com:5000/device-deploy/"+device+"^"+image;
+			myurl="http://vaultsonchain.com:5000/device-deploy/"+device+"/"+image;
+			console.log(myurl);
+			$.ajax({
+				type: "POST",
+				url: myurl,
+				dataType: 'json'
+			}).done(function(jsondata, status, xhr){
+				console.log("Deploy Success");
+				console.log("JSONDATA:", jsondata);
+				console.log(jsondata.device['Intel Edison'].deployedImage);
+				$("#edison_image").html(jsondata.device['Intel Edison'].deployedImage);
+				$("#raspberry_image").html(jsondata.device['Raspberry'].deployedImage);
+				$("#nano_image").html(jsondata.device["Nvidia Jetson Nano"].deployedImage);
+				$("#myModal").modal('show');
+				$("#Deploy").attr("disabled", false);
+			}).fail(function(xhr, status, error){
+				console.log("Deploy Error!");
+			});
+
+		});
+		 
+		 //REMOVE ALL IMAGE SELECT OPTION
+		 $("#ImageSelect").find('option')
+		                  .remove()
+		                  .end()
+
+                 
+		 if (($("#DeviceSelect option:selected").text()) == "Intel Edison"){
+		 	console.log("Selected Intel Edison");
+			//$("#ImageSelect option:contains('Raspberry Azure')").remove();
+			 $("#ImageSelect").append(new Option("Edison NoImage","none-edison_main"));
+			 $("#ImageSelect").append(new Option("Edison Azure","azure-edison_main"));
+			 $("#ImageSelect").append(new Option("Edison ThingsBoard","simple-mqtt-edison_main"));
+		 }else if (($("#DeviceSelect option:selected").text()) == "Raspberry"){
+		 	console.log("Selected Raspberry");
+			$("#ImageSelect").append(new Option("Raspberry NoImage","none-raspberry_main"));
+			$("#ImageSelect").append(new Option("Raspberry Azure","azure-rasp_main"));
+			$("#ImageSelect").append(new Option("Raspberry ThingsBoard","simple-mqtt_main"));
+		 }else if (($("#DeviceSelect option:selected").text()) == "Nvidia Jetson Nano"){
+		 	console.log("Selected Nvidia Jetson Nano");
+			$("#ImageSelect").append(new Option("Nano NoImage","none-nano_main"));
+			$("#ImageSelect").append(new Option("Nano Azure Simulation","azure-nano_main"));
+			$("#ImageSelect").append(new Option("Nano ThingsBoard Simulation","simple-mqtt-nano_main"));
+			$("#ImageSelect").append(new Option("Nano Azure W/Temp.Sensor","azure-nano-yocto_main")); 
+		 }
+
+		 $("#DeviceSelect").on('change', function(){
+			 if (($("#DeviceSelect option:selected").text()) == "Intel Edison"){
+			 	//$("#ImageSelect option:contains('Raspberry Azure')").remove();
+				$("#ImageSelect").find('option')
+				                 .remove()
+				                 .end();
+			        $("#ImageSelect").append(new Option("Edison NoImage","none-edison_main"));
+				$("#ImageSelect").append(new Option("Edison Azure","azure-edison_main"));
+			        $("#ImageSelect").append(new Option("Edison ThingsBoard","simple-mqtt-edison_main")); 
+			 }
+			 else if (($("#DeviceSelect option:selected").text()) == "Raspberry"){
+		 		$("#ImageSelect").find('option')
+				                 .remove()
+				                 .end();
+			         $("#ImageSelect").append(new Option("Raspberry NoImage","none-raspberry_main"));
+				 $("#ImageSelect").append(new Option("Raspberry Azure","azure-rasp_main"));
+			         $("#ImageSelect").append(new Option("Raspberry ThingsBoard","simple-mqtt_main"));
+		 	 }
+			 else if (($("#DeviceSelect option:selected").text()) == "Nvidia Jetson Nano"){
+			 	 $("#ImageSelect").find('option')
+				                  .remove()
+				                  .end();
+				 $("#ImageSelect").append(new Option("Nano NoImage","none-nano_main"));
+				 $("#ImageSelect").append(new Option("Nano Azure Simulation","azure-nano_main"));
+			         $("#ImageSelect").append(new Option("Nano ThingsBoard Simulation","simple-mqtt-nano_main"));
+			         $("#ImageSelect").append(new Option("Nano Azure W/Temp.Sensor","azure-nano-yocto_main")); 
+			 }
+		 });
+	 });
+
+	</script>
+  </head>
+  <body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+<script>
+		
+	setInterval(function(){
+		myurl= "http://vaultsonchain.com:5000/device-status";
+		$.ajax({
+			type: "GET",
+			url: myurl,
+			dataType: 'json'
+		}).done(function(jsondata, status, xhr){
+			//var edison_online = jsondata[0][3];
+			//var edison_count  = jsondata[0][4];
+			//var raspberry_online = jsondata[4][3];
+			//var raspberry_count = jsondata[4][4];
+			//var nano_online = jsondata[3][3];
+			//var nano_count = jsondata[3][4];
+			var edison_online = jsondata[0][3];
+			var edison_count  = jsondata[0][4];
+			var raspberry_online = jsondata[2][3];
+			var raspberry_count = jsondata[2][4];
+			var nano_online = jsondata[1][3];
+			var nano_count = jsondata[1][4];
+			$("#edison_online").html(edison_online);
+			$("#edison_count").html(edison_count);
+			$("#raspberry_online").html(raspberry_online);
+			$("#raspberry_count").html(raspberry_count);
+			$("#nano_online").html(nano_online);
+			$("#nano_count").html(nano_count);
+		}).fail(function(xhr, status, error){
+			console.log("error");
+		});
+
+	}, 10000);
+
+	setInterval(function(){
+		myurl="http://vaultsonchain.com:5000/device-image";
+		$.ajax({
+			type: "GET",
+			url: myurl,
+			dataType: 'json'
+		}).done(function(jsondata, status, xhr){
+			console.log("Getting Image Status");
+			$("#edison_image").html(jsondata.device['Intel Edison'].deployedImage);
+                        $("#raspberry_image").html(jsondata.device['Raspberry'].deployedImage);
+                        $("#nano_image").html(jsondata.device["Nvidia Jetson Nano"].deployedImage);
+		}).fail(function(xhr, status, error){
+			console.log("Get Image Status Error");
+		});
+	}, 10000);
+
+
+
+</script>
+
+
+
+    <div class="panel-header panel-header-sm">
+    </div>
+    <div class="content">
+    <div class="container-fluid">
+	    <!--
+	    <div class="row">
+		    <div class="col-md-12">
+			   <nav class="navbar navbar-light bg-info">
+				   <span class="navbar-brand text-white">
+					   Device Status
+				   </span>
+			   </nav>
+			  
+		    </div>
+	    </div>-->
+	    <div class="row">
+	    	<div class="col-md-12 text-center">
+			<table class="table table-secondary table-hover mt-3">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col"><h5>#</h5></th>
+						<th scope="col">
+							<h5>Device Type</h5>
+						</th>
+						<th scope="col">
+							<h5>Online Devices</h5>
+						</th>
+						<th scope="col">
+							<h5>Number of Devices</h5>
+						</th>
+						<th scope="col">
+							<h5>Deployed Image</h5>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">1</th>
+
+						<td>
+							<button type="button" class="btn btn-secondary btn-block disabled border-0">Intel Edison</button>
+						</td>
+						<td id="edison_online">N/A</td>
+						<td id="edison_count">N/A</td>
+						<td id="edison_image">N/A</td>
+					</tr>
+					<tr>
+						<th scope="row">2</th>
+						<td>
+							
+							<button type="button" class="btn btn-secondary btn-block disabled border-0">Raspberry</button>
+							</td>
+						<td id="raspberry_online">N/A</td>
+						<td id="raspberry_count">N/A</td>
+						<td id="raspberry_image">N/A</td>
+					</tr>
+					<tr>
+						<th scope="row">3</th>
+						<td>
+							
+							<button type="button" class="btn btn-secondary btn-block disabled border-0">Nvidia Jetson Nano</button>
+						</td>
+						<td id="nano_online">N/A</td>
+						<td id="nano_count">N/A</td>
+						<td id="nano_image">N/A</td>
+					</tr>
+				</tbody>
+			</table>
+		
+		</div>
+	    </div>
+
+	    <div class="row">
+		    <div class="col-md-12">
+		    <nav class="navbar navbar-light bg-info text-center">
+				   <span class="navbar-brand text-white">
+					   <h5>Device Settings</h5> 
+				   </span>
+			   </nav>
+
+		    </div>
+	    </div>
+
+
+
+
+
+
+
+	    <div class="row">
+	    	<div class="col-md-12">
+		  
+		  <form>
+			  <div class="row">
+				  <div class="col-md-6">
+					  <div class="input-group mb-3 mt-3">
+						  <div class="col-md-3">
+						  <div class="input-group-prepend">
+							  <span class="input-group-text ml-5">Device</span>	  
+				                  </div>
+						  </div>
+					  
+						  <div class="col-md-6">
+						  <select class="form-control" id="DeviceSelect">
+							<option value="edison">Intel Edison</option>
+							<option value="raspberry">Raspberry</option>
+							<option value="nano">Nvidia Jetson Nano</option>
+						  </select>
+						  </div>
+					  </div>
+				  </div>
+			</div>
+			<div class="row">
+
+				  <div class="col-md-6">
+				  	<div class="input-group mb-3">
+						<div class="col-md-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text ml-5">Image</span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<select class="form-control" id="ImageSelect">
+							<option value="azure-rasp_main">Raspberry Azure</option>
+							<option value="simple-mqtt_main">Raspberry Thingsboard</option>
+							<option value="azure-edison_main">Edison Azure</option>
+							<option value="simple-mqtt-edison_main">Edison ThingsBoard</option>
+						</select>
+						</div>
+					</div>
+				  </div>
+		          </div>
+			  <div class="row">
+			  	<div class="col-md-6 text-left">
+					<button type="button" class="btn btn-info" id="Deploy">Deploy</button>
+				</div>
+			  </div>
+		  </form>
+                  
+		</div>
+	    </div>
+
+
+
+
+	   <div class="modal fade" id="myModal">
+    		<div class="modal-dialog modal-sm">
+      			<div class="modal-content">
+      
+        			<!-- Modal Header -->
+        			<div class="modal-header">
+          				<h4 class="modal-title">Info</h4>
+          				<button type="button" class="close" data-dismiss="modal">&times;</button>
+        			</div>
+        
+				<!-- Modal body -->  
+        			<div class="modal-body" id="modal-body">
+          			Image succesfully deployed.
+				</div>
+        
+        			<!-- Modal footer -->
+        			<div class="modal-footer">
+          				<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+        			</div>
+        
+      			</div>
+    		</div>
+  	</div>
+	    
+    </div><!--container-->
+    </div>
+  </body>
+</html>

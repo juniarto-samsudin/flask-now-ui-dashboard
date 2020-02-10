@@ -3,15 +3,16 @@
       <!-- Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow" -->
       <div class="logo">
         <a href="https://github.com/app-generator/flask-now-ui-dashboard" class="simple-text logo-mini">
-          SRC
+          I3
         </a>
         <a href="https://github.com/app-generator/flask-now-ui-dashboard" class="simple-text logo-normal">
-          Source Code
+          Provisioning
         </a>
       </div>
       {% if current_user.is_authenticated %}
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
+          <!--		
           <li class="active ">
             <a href="/">
               <i class="now-ui-icons design_app"></i>
@@ -36,17 +37,18 @@
               <p>User Profile</p>
             </a>
           </li>
-          <li>
-            <a href="/tables.html">
+	  -->
+          <li class="active">
+            <a href="/tables2.html">
               <i class="now-ui-icons design_bullet-list-67"></i>
-              <p>Table List</p>
+              <p>Deployment</p>
             </a>
           </li>
 
           <li>
-            <a href="/typography.html">
+            <a href="/tables3.html">
               <i class="now-ui-icons text_caps-small"></i>
-              <p>Typography</p>
+              <p>Devices</p>
             </a>
           </li>
 
@@ -56,13 +58,14 @@
               <p>Logout</p>
             </a>
           </li>
-
+          <!--
           <li class="active-pro">
             <a href="https://appseed.us">
               <i class="now-ui-icons objects_spaceship"></i>
               <p>AppSeed</p>
             </a>
           </li>
+          -->
         </ul>
       </div>
       {% endif %}

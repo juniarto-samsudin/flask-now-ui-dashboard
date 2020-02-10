@@ -1,0 +1,28 @@
+{"uuid":   {
+	"2d81540" : {"type": "jetson-nano",
+	             "ACCESS_TOKEN": "tTkrnM9PZRlNYM8nPaQW",
+	             "AZURE_ACCESS_KEY": "91m222Cq3K3v8VFGOXgzYUrzQWq2F5IpoWxsf0NxLok=",
+	             "AZURE_DEVICE_ID": "nano",
+	             "AZURE_HOST_NAME": "i3-sg.azure-devices.net",
+	             "SENSOR_SN": "METEOMK1-90AF6",
+	             "THINGSBOARD_HOST":"18.139.190.238"
+	            },
+        "00ce14b" : {"type": "raspberrypi3",
+		     "ACCESS_TOKEN": "tTkrnM9PZRlNYM8nPaQW",
+	             "AZURE_ACCESS_KEY": "91m222Cq3K3v8VFGOXgzYUrzQWq2F5IpoWxsf0NxLok=",
+	             "AZURE_DEVICE_ID": "nano",
+	             "AZURE_HOST_NAME": "i3-sg.azure-devices.net",
+	             "SENSOR_SN": "METEOMK1-90AF6",
+	             "THINGSBOARD_HOST":"18.139.190.238"
+	            },                      
+        "9f2e4a4" : {"type": "intel-edison",
+		     "ACCESS_TOKEN": "tTkrnM9PZRlNYM8nPaQW",
+	             "AZURE_ACCESS_KEY": "91m222Cq3K3v8VFGOXgzYUrzQWq2F5IpoWxsf0NxLok=",
+	             "AZURE_DEVICE_ID": "nano",
+	             "AZURE_HOST_NAME": "i3-sg.azure-devices.net",
+	             "SENSOR_SN": "METEOMK1-90AF6",
+	             "THINGSBOARD_HOST":"18.139.190.238"
+		    }
+
+	}
+}
