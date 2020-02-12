@@ -151,22 +151,26 @@ with open('config.json') as f:
 def getJsonDeviceName(name):
     if (name == "edison"):
         return "Intel Edison"
-    elif (name == "raspberry"):
+    elif (name == "rasp"):
         return "Raspberry"
     elif (name == "nano"):
         return "Nvidia Jetson Nano"
 
 def getJsonImageName(name):
     if (name == "azure-rasp_main"):
-        return "Raspberry Azure"
+        return "Raspberry Azure Simulation"
     elif (name == "simple-mqtt_main"):
-        return "Raspberry ThingsBoard"
+        return "Raspberry ThingsBoard Simulation"
     elif (name == "none-raspberry_main"):
         return "Raspberry NoImage"
+    elif (name == "azure-rasp-yocto_main"):
+        return "Raspberry Azure W/Temp.Sensor"
+    elif (name == "tb-rasp-yocto_main"):
+        return "Raspberry ThingsBoard W/Temp.Sesnor"
     elif (name == "azure-edison_main"):
-        return "Edison Azure"
+        return "Edison Azure Simulation"
     elif (name == "simple-mqtt-edison_main"):
-        return "Edison ThingsBoard"
+        return "Edison ThingsBoard Simulation"
     elif (name == "none-edison_main"):
         return "Edison NoImage"
     elif (name == "azure-nano_main"):
@@ -177,6 +181,8 @@ def getJsonImageName(name):
         return "Nano NoImage"
     elif (name == "azure-nano-yocto_main"):
         return "Nano Azure W/Temp.Sensor"
+    elif (name == "tb-nano-yocto_main"):
+        return "Nano ThingsBoard W/Temp.Sensor"
 
 def createResponse(data):
     print ("createResponse",data)

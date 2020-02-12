@@ -50,19 +50,22 @@
 		 	console.log("Selected Intel Edison");
 			//$("#ImageSelect option:contains('Raspberry Azure')").remove();
 			 $("#ImageSelect").append(new Option("Edison NoImage","none-edison_main"));
-			 $("#ImageSelect").append(new Option("Edison Azure","azure-edison_main"));
-			 $("#ImageSelect").append(new Option("Edison ThingsBoard","simple-mqtt-edison_main"));
+			 $("#ImageSelect").append(new Option("Edison Azure Simulation","azure-edison_main"));
+			 $("#ImageSelect").append(new Option("Edison ThingsBoard Simulation","simple-mqtt-edison_main"));
 		 }else if (($("#DeviceSelect option:selected").text()) == "Raspberry"){
 		 	console.log("Selected Raspberry");
 			$("#ImageSelect").append(new Option("Raspberry NoImage","none-raspberry_main"));
-			$("#ImageSelect").append(new Option("Raspberry Azure","azure-rasp_main"));
-			$("#ImageSelect").append(new Option("Raspberry ThingsBoard","simple-mqtt_main"));
+			$("#ImageSelect").append(new Option("Raspberry Azure Simulation","azure-rasp_main"));
+			$("#ImageSelect").append(new Option("Raspberry ThingsBoard Simulation","simple-mqtt_main"));
+			$("#ImageSelect").append(new Option("Raspberry Azure W/Temp.Sensor","azure-rasp-yocto_main"));
+			$("#ImageSelect").append(new Option("Raspberry ThingsBoard W/Temp.Sensor","tb-rasp-yocto_main"));
 		 }else if (($("#DeviceSelect option:selected").text()) == "Nvidia Jetson Nano"){
 		 	console.log("Selected Nvidia Jetson Nano");
 			$("#ImageSelect").append(new Option("Nano NoImage","none-nano_main"));
 			$("#ImageSelect").append(new Option("Nano Azure Simulation","azure-nano_main"));
 			$("#ImageSelect").append(new Option("Nano ThingsBoard Simulation","simple-mqtt-nano_main"));
 			$("#ImageSelect").append(new Option("Nano Azure W/Temp.Sensor","azure-nano-yocto_main")); 
+		 	$("#ImageSelect").append(new Option("Nano ThingsBoard W/Temp.Sensor","tb-nano-yocto_main"));
 		 }
 
 		 $("#DeviceSelect").on('change', function(){
@@ -72,16 +75,18 @@
 				                 .remove()
 				                 .end();
 			        $("#ImageSelect").append(new Option("Edison NoImage","none-edison_main"));
-				$("#ImageSelect").append(new Option("Edison Azure","azure-edison_main"));
-			        $("#ImageSelect").append(new Option("Edison ThingsBoard","simple-mqtt-edison_main")); 
+				$("#ImageSelect").append(new Option("Edison Azure Simulation","azure-edison_main"));
+			        $("#ImageSelect").append(new Option("Edison ThingsBoard Simulation","simple-mqtt-edison_main")); 
 			 }
 			 else if (($("#DeviceSelect option:selected").text()) == "Raspberry"){
 		 		$("#ImageSelect").find('option')
 				                 .remove()
 				                 .end();
 			         $("#ImageSelect").append(new Option("Raspberry NoImage","none-raspberry_main"));
-				 $("#ImageSelect").append(new Option("Raspberry Azure","azure-rasp_main"));
-			         $("#ImageSelect").append(new Option("Raspberry ThingsBoard","simple-mqtt_main"));
+				 $("#ImageSelect").append(new Option("Raspberry Azure Simulation","azure-rasp_main"));
+			         $("#ImageSelect").append(new Option("Raspberry ThingsBoard Simulation","simple-mqtt_main"));
+			         $("#ImageSelect").append(new Option("Raspberry Azure W/Temp.Sensor","azure-rasp-yocto_main"));
+			         $("#ImageSelect").append(new Option("Raspberry ThingsBoard W/Temp.Sensor","tb-rasp-yocto_main"));
 		 	 }
 			 else if (($("#DeviceSelect option:selected").text()) == "Nvidia Jetson Nano"){
 			 	 $("#ImageSelect").find('option')
@@ -90,7 +95,8 @@
 				 $("#ImageSelect").append(new Option("Nano NoImage","none-nano_main"));
 				 $("#ImageSelect").append(new Option("Nano Azure Simulation","azure-nano_main"));
 			         $("#ImageSelect").append(new Option("Nano ThingsBoard Simulation","simple-mqtt-nano_main"));
-			         $("#ImageSelect").append(new Option("Nano Azure W/Temp.Sensor","azure-nano-yocto_main")); 
+			         $("#ImageSelect").append(new Option("Nano Azure W/Temp.Sensor","azure-nano-yocto_main"));
+				 $("#ImageSelect").append(new Option("Nano ThingsBoard W/Temp.Sensor","tb-nano-yocto_main"));
 			 }
 		 });
 	 });
@@ -264,7 +270,7 @@
 						  <div class="col-md-6">
 						  <select class="form-control" id="DeviceSelect">
 							<option value="edison">Intel Edison</option>
-							<option value="raspberry">Raspberry</option>
+							<option value="rasp">Raspberry</option>
 							<option value="nano">Nvidia Jetson Nano</option>
 						  </select>
 						  </div>
