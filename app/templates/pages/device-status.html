@@ -1,0 +1,55 @@
+ <div class="panel-header panel-header-sm">
+ </div>
+<div class="content">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Device Deployment Status</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                        <th>
+                            UUID
+                        </th>
+                        <th>
+                            Device Type
+                        </th>
+                        <th>
+                            Online Status
+                        </th>
+                        <th>
+                            IP Address
+                        </th>
+                        <th>
+                            Application Name
+                        </th>
+                        </thead>
+                        <tbody>
+                            {% for device in msg %}
+                            <tr>
+                                <td>
+                                    {{ device.uuid[:7] }}
+                                </td>
+                                <td>
+                                    {{ device.device_type }}
+                                </td>
+                                <td>
+                                    {{ device.is_online }}
+                                </td>
+                                <td>
+                                    {{ device.ip_address }}
+                                </td>
+                                <td>
+                                    {{ device.app_name }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

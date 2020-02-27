@@ -20,6 +20,7 @@ from app.forms  import LoginForm, RegisterForm
 # From old dashboard
 import os
 import simplejson as json
+import requests
 
 # provide login manager with load_user callback
 @lm.user_loader
@@ -114,7 +115,7 @@ def login():
                             content=render_template( 'pages/login.html', form=form, msg=msg ) )
 
 # App main route + generic routing
-@app.route('/', defaults={'path': 'tables2.html'})
+@app.route('/', defaults={'path': 'device-status.html'})
 @app.route('/<path>')
 def index(path):
 
@@ -124,10 +125,10 @@ def index(path):
     content = None
 
     try:
-
+        response = requests.get("http://localhost:5004/devs-apps-simple")
         # try to match the pages defined in -> pages/<input file>
         return render_template('layouts/default.html',
-                                content=render_template( 'pages/'+path) )
+                                content=render_template( 'pages/'+path, msg=json.loads(response.content)) )
     except:
         
         return render_template('layouts/auth-default.html',
