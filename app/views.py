@@ -230,3 +230,13 @@ def deviceDeploy(device=None,image=None):
         print("deviceDeploy failed!")
         return createResponse(1)
 
+
+@app.route('/getEnvVar/<uuid>', methods=['GET'])
+def getEnvVar(uuid=None):
+    print ("uuid:", uuid)
+    command = "balena envs --device " + uuid
+    print (command)
+    stream = os.popen(command)
+    output = stream.read()
+    return createResponse(output)
+

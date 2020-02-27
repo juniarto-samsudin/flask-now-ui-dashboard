@@ -1,4 +1,5 @@
 
+
   <!--   Core JS Files   -->
   <script src="/static/assets/js/core/jquery.min.js"></script>
   <script src="/static/assets/js/core/popper.min.js"></script>
@@ -18,7 +19,20 @@
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       //demo.initDashboardPageCharts();
-
+      $("#rasp_var").click(function(){
+      		console.log("Rasp_Var Clicked");
+	        myurl="http://vaultsonchain.com:5000/getEnvVar/00ce14b";
+	        $.ajax({
+			type: "GET",
+			url: myurl,
+			dataType: 'json'
+		}).done(function(jsondata, status, xhr){
+			console.log("JSONDATA:", jsondata);
+		}).fail(function(xhr, status, error){
+		
+		});
+      });
     });
   </script>
+
 

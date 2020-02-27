@@ -1,0 +1,1 @@
+{"device": {"Intel Edison": {"image": ["Azure", "ThingsBoard", "None"], "deployedImage": "Edison Azure Simulation"}, "Raspberry": {"image": ["Azure", "ThingsBoard", "None"], "deployedImage": "Raspberry NoImage"}, "Nvidia Jetson Nano": {"image": ["Azure", "ThingsBoard", "None"], "deployedImage": "Nano Azure Simulation"}}}
