@@ -125,7 +125,8 @@ def index(path):
     content = None
 
     try:
-        response = requests.get("http://localhost:5004/devs-apps-simple")
+        PROVREST = os.get_env('PROVISIONING-REST') + 'devs-apps-simple'
+        response = requests.get(PROVREST)
         # try to match the pages defined in -> pages/<input file>
         return render_template('layouts/default.html',
                                 content=render_template( 'pages/'+path, msg=json.loads(response.content)) )
