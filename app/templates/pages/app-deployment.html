@@ -1,0 +1,58 @@
+ <div class="panel-header panel-header-sm">
+ </div>
+<div class="content">
+<div class="row">
+    <div class="col-md-8">
+    <div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Application Deployment</h4>
+    </div>
+    <div class="card-body">
+        <form role="form" method="post" action="">
+            {{ form.hidden_tag() }}
+
+            <div class="row">
+                <div class="col-md-1 pr-1"></div>
+
+                <div class="col-md-3 pr-1">
+                    <div class="form-group">
+                        <label>Application</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6 pr1">
+                    <div class="form-group">
+                        {{ form.application(placeholder="Application", class="form-control") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1 pr-1"></div>
+
+                <div class="col-md-3 pr-1">
+                    <div class="form-group">
+                        <label>Image</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6 pr1">
+                    <div class="form-group">
+                        {{ form.image(placeholder="Image", class="form-control") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1 pr-1"></div>
+                <div class="col-md-2 pr-1">
+                    <button type="submit" class="btn btn-fill btn-primary">Deploy</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    </div>
+    </div>
+</div>
+</div>

@@ -15,7 +15,7 @@ from werkzeug.exceptions import HTTPException, NotFound, abort
 # App modules
 from app        import app, lm, db, bc
 from app.models import User
-from app.forms  import LoginForm, RegisterForm
+from app.forms  import LoginForm, RegisterForm, DeployAppForm
 
 # From old dashboard
 import os
@@ -125,12 +125,60 @@ def index(path):
     content = None
 
     try:
-        PROVREST = os.getenv('PROVISIONING_REST_URL') + 'devs-apps-simple'
-        print(PROVREST)
-        response = requests.get(PROVREST)
+        #IF DOCKER
+        PROVURL = os.getenv('PROVISINIONG_REST_URL')
+
+        #IF NOT DOCKER
+        if (PROVURL == None):
+            PROVURL = "http://vaultsonchain.com:5004/"
+
+        #PROVREST = os.getenv('PROVISIONING_REST_URL') + 'devs-apps-simple'
+        #PROVREST = PROVURL + 'devs-apps-simple'
+
+        #print(PROVREST)
+        #response = requests.get(PROVREST)
         # try to match the pages defined in -> pages/<input file>
-        return render_template('layouts/default.html',
+        if  (path=="device-status.html"):
+            PROVREST = PROVURL + 'devs-apps-simple'
+            response = requests.get(PROVREST)
+            return render_template('layouts/default.html',
                                 content=render_template( 'pages/'+path, msg=json.loads(response.content)) )
+        elif (path=="app-deployment.html"):
+            #GET APPLICATION LIST
+            PROVREST = PROVURL + 'applications-only'
+            response = requests.get(PROVREST)
+            responseJSON = json.loads(response.content)
+
+            choiceAppList = []
+
+            i = 0
+            while i < len(responseJSON):
+                print (responseJSON[i])
+                choiceAppTuple = (responseJSON[i]['value'], responseJSON[i]['name'])
+                choiceAppList.append(choiceAppTuple)
+                i+=1
+
+            #GET IMAGE LIST
+            PROVREST = PROVURL + 'images'
+            response = requests.get(PROVREST)
+            responseJSON = json.loads(response.content)
+
+            choiceImageList = []
+
+            i = 0
+            while i < len(responseJSON):
+                print (responseJSON[i])
+                choiceImageTuple = (responseJSON[i]['value'], responseJSON[i]['name'])
+                choiceImageList.append(choiceImageTuple)
+                i+=1
+
+
+            # Declare Form
+            form = DeployAppForm(request.form)
+            form.application.choices = choiceAppList
+            form.image.choices = choiceImageList
+            return render_template('layouts/default.html',
+                                   content=render_template('pages/app-deployment.html', form=form))
     except:
         
         return render_template('layouts/auth-default.html',
