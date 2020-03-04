@@ -25,6 +25,9 @@
                         <th>
                             Application Name
                         </th>
+                        <th>
+                            Deployed Image
+                        </th>
                         </thead>
                         <tbody>
                             {% for device in msg %}
@@ -43,6 +46,9 @@
                                 </td>
                                 <td>
                                     {{ device.app_name }}
+                                </td>
+                                <td>
+                                    {{ device.image }}
                                 </td>
                             </tr>
                             {% endfor %}

@@ -8,19 +8,22 @@ Copyright (c) 2019 - present AppSeed.us
 import os, logging 
 
 # Flask modules
-from flask               import render_template, request, url_for, redirect, send_from_directory
+from flask               import render_template, request, url_for, redirect, send_from_directory, flash, session
 from flask_login         import login_user, logout_user, current_user, login_required
 from werkzeug.exceptions import HTTPException, NotFound, abort
 
 # App modules
 from app        import app, lm, db, bc
-from app.models import User
+from app.models import User, DeploymentLatest
 from app.forms  import LoginForm, RegisterForm, DeployAppForm
 
 # From old dashboard
 import os
 import simplejson as json
 import requests
+
+
+TOKEN = "iIJZep7sYmgERjqxZ5sIBWnzcOkwUe1Q"
 
 # provide login manager with load_user callback
 @lm.user_loader
@@ -115,8 +118,8 @@ def login():
                             content=render_template( 'pages/login.html', form=form, msg=msg ) )
 
 # App main route + generic routing
-@app.route('/', defaults={'path': 'device-status.html'})
-@app.route('/<path>')
+@app.route('/', defaults={'path': 'device-status.html'},methods=['POST','GET'])
+@app.route('/<path>',methods=['POST','GET'])
 def index(path):
 
     if not current_user.is_authenticated:
@@ -141,8 +144,25 @@ def index(path):
         if  (path=="device-status.html"):
             PROVREST = PROVURL + 'devs-apps-simple'
             response = requests.get(PROVREST)
+            responseJSON = json.loads(response.content)
+
+            apps = DeploymentLatest.query.all() #Get from deployment-database
+            #add image and release keys to the responseJSON
+            i = 0
+            j = 0
+            while i < len(responseJSON):
+                while j < len(apps):
+                    if (responseJSON[i]['app_name'] == apps[j].app):
+                        responseJSON[i]['image'] = apps[j].image
+                        responseJSON[i]['release'] = apps[j].release
+                    j+=1
+                j=0
+                i+=1
+
+            print(responseJSON)
+
             return render_template('layouts/default.html',
-                                content=render_template( 'pages/'+path, msg=json.loads(response.content)) )
+                                content=render_template( 'pages/'+path, msg=responseJSON) )
         elif (path=="app-deployment.html"):
             #GET APPLICATION LIST
             PROVREST = PROVURL + 'applications-only'
@@ -177,8 +197,56 @@ def index(path):
             form = DeployAppForm(request.form)
             form.application.choices = choiceAppList
             form.image.choices = choiceImageList
-            return render_template('layouts/default.html',
+
+            if request.method == 'GET':
+                return render_template('layouts/default.html',
                                    content=render_template('pages/app-deployment.html', form=form))
+            if form.validate_on_submit():
+                session['application'] = form.application.data
+                session['image'] = form.image.data
+                PROVREST = PROVURL + "app-deploy" + "/" + session['application'] + "/" + session['image']
+                print (PROVREST)
+                response = requests.get(PROVREST)
+                responseJSON = json.loads(response.content)
+                print(responseJSON['release'])
+                if (responseJSON['release'] == 'deploy failed!' or responseJSON['release'] == 'login failed'):
+                    print("DEPLOY FAILED")
+                    message = "Deployment of {} to {} application FAILED"
+                    flash(message.format(session['image'],session['application']))
+                    return render_template('layouts/default.html',
+                                           content=render_template('pages/app-deployment.html', form=form))
+                else:
+                    print("DEPLOY SUCCESS")
+
+                    #DataBase Operation
+                    #Check whether app exist
+                    app = DeploymentLatest.query.filter_by(app=responseJSON['app']).first()
+                    print("APP.IMAGE:" + app.image)
+                    print("APP.RELEASE:" + app.release)
+
+                    if app is None:   #Create new record
+                        deployment = DeploymentLatest(responseJSON['app'], responseJSON['image'], responseJSON['release'])
+                        deployment.save()
+                    else:
+                        app.image = responseJSON['image']
+                        app.release = responseJSON['release']
+                        app.save()
+
+
+                    message = "Deployment of {} to {} application SUCCESSFUL"
+                    flash(message.format(session['image'],session['application']))
+                    return render_template('layouts/default.html',
+                                           content=render_template('pages/app-deployment.html', form=form))
+                '''
+                if "Successfully" in output:
+                    command1 = "balena deploy " + application + " " + image
+                    print (command1)
+                    stream = os.popen(command1)
+                    output = stream.read()
+                    if "succeeded!" in output:
+                        print("Deploy Successfull")
+                        return redirect(url_for('index'))
+                '''
     except:
         
         return render_template('layouts/auth-default.html',
@@ -191,6 +259,7 @@ def sitemap():
 
 
 # FROM OLD DASHBOARD
+'''
 config = None
 
 with open('config.json') as f:
@@ -290,4 +359,4 @@ def getEnvVar(uuid=None):
     stream = os.popen(command)
     output = stream.read()
     return createResponse(output)
-
+'''

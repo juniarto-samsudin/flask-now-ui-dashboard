@@ -31,3 +31,26 @@ class User(UserMixin, db.Model):
         db.session.commit( )
 
         return self 
+
+class DeploymentLatest(db.Model):
+    __tablename__ = 'deploymentlatest'
+    app = db.Column(db.String(64), primary_key=True)
+    image = db.Column(db.String(64))
+    release = db.Column(db.String(64), unique=True)
+
+    def __init__(self, app, image, release):
+        self.app = app
+        self.image = image
+        self.release = release
+
+    def __repr__(self):
+        return self.app + ' - ' + self.image + ' - ' + self.release
+
+    def save(self):
+        # inject self into db session
+        db.session.add(self)
+
+        # commit change and save the object
+        db.session.commit()
+
+        return self
