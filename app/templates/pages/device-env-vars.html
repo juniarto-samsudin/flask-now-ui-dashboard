@@ -1,0 +1,77 @@
+<div class="panel-header panel-header-sm">
+ </div>
+ <div id="divCheckbox" style="display: none;">
+     {% if page %}
+     <label id="page">{{ page|safe }}</label>
+     {% endif %}
+ </div>
+<div class="content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Device Environment Vars</h4>
+                </div>
+                <div class="card-body">
+                        <form role="form" method="post" action="">
+                            {{ form.hidden_tag() }}
+                            <div class="row">
+                                <div class="col-md-1 pr-1"></div>
+
+                                <div class="col-md-3 pr-1">
+                                    <div class="form-group">
+                                        <label>Device</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                        {{ form.device(placeholder="Device", class="form-control") }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-1 pr-1"></div>
+                                <div class="col-md-2 pr-1">
+                                    <button type="submit" class="btn btn-fill btn-primary">Show</button>
+                                </div>
+                            </div>
+                        </form>
+                    {% if msg %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-primary">
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                            </thead>
+                            <tbody>
+                            {% for envvar in msg %}
+                            <tr>
+                                <td>
+                                    {{ envvar.id }}
+                                </td>
+                                <td>
+                                    {{ envvar.name }}
+                                </td>
+                                <td>
+                                    {{ envvar.value }}
+                                </td>
+                            </tr>
+                                  {% endfor %}
+                            </tbody>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

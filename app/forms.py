@@ -22,3 +22,6 @@ class RegisterForm(FlaskForm):
 class DeployAppForm(FlaskForm):
 	application = SelectField   (u'Application', choices=[('cpp','C++')])
 	image		= SelectField	(u'Image', choices=[('test','Test')])
+
+class QueryDevEnvVarsForm(FlaskForm):
+	device = SelectField (u'Device', choices=[('cpp','C++')])

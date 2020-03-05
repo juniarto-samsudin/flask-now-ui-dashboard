@@ -33,6 +33,36 @@
 		});
       });
     });
+$(document).ready(function(){
+    if ( $('#page').text() == "app-deployment"){
+      $("#ApplicationDeployment").addClass("active")
+      $("#DeploymentStatus").removeClass("active")
+      $("#DeviceEnvVars").removeClass("active")
+    } else if ($('#page').text() == "device-status"){
+      $("#ApplicationDeployment").removeClass("active")
+      $("#DeploymentStatus").addClass("active")
+      $("#DeviceEnvVars").removeClass("active")
+    } else if ($('#page').text() == "device-env-vars"){
+      $("#ApplicationDeployment").removeClass("active")
+      $("#DeploymentStatus").removeClass("active")
+      $("#DeviceEnvVars").addClass("active")
+    }
+});
+
+    /*
+    $('#Application Deployment').click(function(){
+
+      console.log("JUNI")
+      $('#Deployment Status').removeClass("active")
+      $(this).addClass("active")
+    });
+    */
+    //$('li').click(function(){
+    //  console.log("TEST");
+    //  $('#x').removeClass("active");
+    //  $(this).addClass("active");
+    //});
+
   </script>
 
 

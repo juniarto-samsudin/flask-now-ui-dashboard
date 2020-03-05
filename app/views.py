@@ -15,7 +15,7 @@ from werkzeug.exceptions import HTTPException, NotFound, abort
 # App modules
 from app        import app, lm, db, bc
 from app.models import User, DeploymentLatest
-from app.forms  import LoginForm, RegisterForm, DeployAppForm
+from app.forms  import LoginForm, RegisterForm, DeployAppForm, QueryDevEnvVarsForm
 
 # From old dashboard
 import os
@@ -162,7 +162,7 @@ def index(path):
             print(responseJSON)
 
             return render_template('layouts/default.html',
-                                content=render_template( 'pages/'+path, msg=responseJSON) )
+                                content=render_template( 'pages/'+path, msg=responseJSON, page="device-status") )
         elif (path=="app-deployment.html"):
             #GET APPLICATION LIST
             PROVREST = PROVURL + 'applications-only'
@@ -200,7 +200,7 @@ def index(path):
 
             if request.method == 'GET':
                 return render_template('layouts/default.html',
-                                   content=render_template('pages/app-deployment.html', form=form))
+                                   content=render_template('pages/app-deployment.html', form=form, page="app-deployment"))
             if form.validate_on_submit():
                 session['application'] = form.application.data
                 session['image'] = form.image.data
@@ -214,7 +214,7 @@ def index(path):
                     message = "Deployment of {} to {} application FAILED"
                     flash(message.format(session['image'],session['application']))
                     return render_template('layouts/default.html',
-                                           content=render_template('pages/app-deployment.html', form=form))
+                                           content=render_template('pages/app-deployment.html', form=form, page="app-deployment"))
                 else:
                     print("DEPLOY SUCCESS")
 
@@ -236,7 +236,7 @@ def index(path):
                     message = "Deployment of {} to {} application SUCCESSFUL"
                     flash(message.format(session['image'],session['application']))
                     return render_template('layouts/default.html',
-                                           content=render_template('pages/app-deployment.html', form=form))
+                                           content=render_template('pages/app-deployment.html', form=form, page="app-deployment"))
                 '''
                 if "Successfully" in output:
                     command1 = "balena deploy " + application + " " + image
@@ -247,6 +247,35 @@ def index(path):
                         print("Deploy Successfull")
                         return redirect(url_for('index'))
                 '''
+        elif (path=="device-env-vars.html"):
+            #GET DEVICE LIST
+            PROVREST = PROVURL + 'devs-apps-simple'
+            response = requests.get(PROVREST)
+            responseJSON = json.loads(response.content)
+
+            choiceDevList = []
+
+            for device in responseJSON:
+                choiceAppTuple = (device['uuid'], device['device_name'])
+                choiceDevList.append(choiceAppTuple)
+
+            #Declare Form
+            form = QueryDevEnvVarsForm(request.form)
+            form.device.choices = choiceDevList
+
+
+            if request.method == 'GET':
+                return render_template('layouts/default.html',
+                                   content=render_template('pages/'+path, form=form, page="device-env-vars"))
+            if form.validate_on_submit():
+                session['device'] = form.device.data
+                PROVREST = PROVURL + "dev-env-vars-simple" + "/" + session['device']
+                print (PROVREST)
+                response = requests.get(PROVREST)
+                responseJSON = json.loads(response.content)
+                print(responseJSON)
+                return render_template('layouts/default.html',
+                                       content=render_template('pages/'+path, form=form, page="device-env-vars", msg=responseJSON))
     except:
         
         return render_template('layouts/auth-default.html',
