@@ -221,8 +221,8 @@ def index(path):
                     #DataBase Operation
                     #Check whether app exist
                     app = DeploymentLatest.query.filter_by(app=responseJSON['app']).first()
-                    print("APP.IMAGE:" + app.image)
-                    print("APP.RELEASE:" + app.release)
+                    #print("APP.IMAGE:" + app.image)
+                    #print("APP.RELEASE:" + app.release)
 
                     if app is None:   #Create new record
                         deployment = DeploymentLatest(responseJSON['app'], responseJSON['image'], responseJSON['release'])
