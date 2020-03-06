@@ -25,3 +25,8 @@ class DeployAppForm(FlaskForm):
 
 class QueryDevEnvVarsForm(FlaskForm):
 	device = SelectField (u'Device', choices=[('cpp','C++')])
+
+class SetDevEnvVarsForm(FlaskForm):
+	device = SelectField(u'Device', choices=[('cpp','C++')])
+	envvar = StringField(u'Envvar', validators=[DataRequired()])
+	value = StringField(u'value', validators=[DataRequired()])

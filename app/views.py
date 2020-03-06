@@ -15,7 +15,7 @@ from werkzeug.exceptions import HTTPException, NotFound, abort
 # App modules
 from app        import app, lm, db, bc
 from app.models import User, DeploymentLatest
-from app.forms  import LoginForm, RegisterForm, DeployAppForm, QueryDevEnvVarsForm
+from app.forms  import LoginForm, RegisterForm, DeployAppForm, QueryDevEnvVarsForm, SetDevEnvVarsForm
 
 # From old dashboard
 import os
@@ -263,10 +263,14 @@ def index(path):
             form = QueryDevEnvVarsForm(request.form)
             form.device.choices = choiceDevList
 
+            #Declare Set
+            settings = SetDevEnvVarsForm(request.form)
+            settings.device.choices = choiceDevList
+
 
             if request.method == 'GET':
                 return render_template('layouts/default.html',
-                                   content=render_template('pages/'+path, form=form, page="device-env-vars"))
+                                   content=render_template('pages/'+path, form=form, settings=settings, page="device-env-vars"))
             if form.validate_on_submit():
                 session['device'] = form.device.data
                 PROVREST = PROVURL + "dev-env-vars-simple" + "/" + session['device']
@@ -275,7 +279,7 @@ def index(path):
                 responseJSON = json.loads(response.content)
                 print(responseJSON)
                 return render_template('layouts/default.html',
-                                       content=render_template('pages/'+path, form=form, page="device-env-vars", msg=responseJSON))
+                                       content=render_template('pages/'+path, form=form, settings=settings,  page="device-env-vars", msg=responseJSON))
     except:
         
         return render_template('layouts/auth-default.html',

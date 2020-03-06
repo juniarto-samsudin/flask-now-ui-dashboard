@@ -7,7 +7,7 @@
  </div>
 <div class="content">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Device Environment Vars</h4>
@@ -67,11 +67,76 @@
                             </tr>
                                   {% endfor %}
                             </tbody>
-                            {% endif %}
                         </table>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+       <div class="row">
+        <div class="col-md-10">
+            <div class="card">
+                <div clas="card-header">
+                    <h4 class="card-title">Device Environment Settings</h4>
+                </div>
+                <div class="card-body">
+                      <form role="form" method="post" action="">
+                          {% if settings %}
+                          {{ settings.hidden_tag() }}
+                          {% endif %}
+                          <div class="row">
+                              <div class="col-md-1 pr-1"></div>
+                              <div class="col-md-3 pr-1">
+                                  <div class="form-group">
+                                      <label>Device Settings</label>
+                                  </div>
+                              </div>
+
+                               <div class="col-md-6 pr-1">
+                                      <div class="form-group">
+                                          {% if settings %}
+                                          {{ settings.device(placeholder="Device", class="form-control") }}
+                                           {% endif %}
+                                      </div>
+                               </div>
+                          </div>
+
+                          <div class="row">
+                              <div class="col-md-1 pr-1"></div>
+
+                              <div class="col-md-3 pr-1">
+                                  <div class="form-group">
+                                      <label>Env. Variable</label>
+                                  </div>
+                              </div>
+
+                              <div class="col-md-6 pr-1">
+                                  <div class="form-group">
+                                  {{ settings.envvar(placeholder="Envvar", class="form-control") }}
+                                  </div>
+                              </div>
+
+                          </div>
+
+                          <div class="row">
+                               <div class="col-md-1 pr-1"></div>
+                               <div class="col-md-3 pr-1">
+                                   <div class="form-group">
+                                       <label>Value</label>
+                                   </div>
+                               </div>
+                               <div class="col-md-6 pr-1">
+                                   <div class="form-group">
+                                       {{ settings.value(placeholder="Value", class="form-control") }}
+                                   </div>
+                               </div>
+                          </div>
+
+                          
+                      </form>
+                </div>
+            </div>
+       </div>
+        </div>
 </div>
