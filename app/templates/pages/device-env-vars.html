@@ -10,7 +10,7 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Device Environment Vars</h4>
+                    <h4 class="card-title">Settings</h4>
                 </div>
                 <div class="card-body">
                         <form role="form" method="post" action="">
@@ -31,12 +31,20 @@
                                 </div>
                             </div>
 
+
+                            <div class="row">
+                                <div class="col-md-1 pr-1"></div>
+                                <div class="col-md-2 pr-1">
+                                {{ form.submit1(class="btn btn-fill btn-primary") }}
+                                </div>
+                            </div>
+                            <!--
                             <div class="row">
                                 <div class="col-md-1 pr-1"></div>
                                 <div class="col-md-2 pr-1">
                                     <button type="submit" class="btn btn-fill btn-primary">Show</button>
                                 </div>
-                            </div>
+                            </div>-->
                         </form>
                     {% if msg %}
                     <div class="table-responsive">
@@ -74,17 +82,18 @@
             </div>
         </div>
     </div>
+    <!--ADD SETTINGS CARD-->
        <div class="row">
         <div class="col-md-10">
             <div class="card">
-                <div clas="card-header">
-                    <h4 class="card-title">Device Environment Settings</h4>
+                <div class="card-header">
+                    <h4 class="card-title">Add Settings</h4>
                 </div>
                 <div class="card-body">
                       <form role="form" method="post" action="">
-                          {% if settings %}
+
                           {{ settings.hidden_tag() }}
-                          {% endif %}
+
                           <div class="row">
                               <div class="col-md-1 pr-1"></div>
                               <div class="col-md-3 pr-1">
@@ -95,9 +104,9 @@
 
                                <div class="col-md-6 pr-1">
                                       <div class="form-group">
-                                          {% if settings %}
+                                          
                                           {{ settings.device(placeholder="Device", class="form-control") }}
-                                           {% endif %}
+
                                       </div>
                                </div>
                           </div>
@@ -107,7 +116,7 @@
 
                               <div class="col-md-3 pr-1">
                                   <div class="form-group">
-                                      <label>Env. Variable</label>
+                                      <label>Name</label>
                                   </div>
                               </div>
 
@@ -133,10 +142,120 @@
                                </div>
                           </div>
 
+                          <!--
+                          <div class="row">
+                              <div class="col-md-1 pr-1"></div>
+                              <div class="col-md-2 pr-1">
+                                  <button type="submit" class="btn btn-fill btn-primary">Set</button>
+                              </div>
+                          </div>
+                          -->
+
+                          <div class="row">
+                              <div class="col-md-1 pr-1"></div>
+                              <div class="col-md-2 pr-1">
+                                  {{ settings.submit2(class="btn btn-fill btn-primary") }}
+                              </div>
+                          </div>
                           
                       </form>
                 </div>
             </div>
        </div>
         </div>
+    <!--REMOVE SETTINGS CARD-->
+    <div class="row">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Remove Settings</h4>
+                </div>
+                <div class="card-body">
+                    <form role="form" method="post" action="">
+
+                        {{ removesettings.hidden_tag() }}
+
+                        <div class="row">
+                            <div class="col-md-1 pr-1"></div>
+
+                            <div class="col-md-3 pr-1">
+                            <div class="form-group">
+                                <label>Id</label>
+                            </div>
+                            </div>
+
+
+                            <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                    {{ removesettings.id(placeholder="Id", class="form-control") }}
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1 pr-1"></div>
+                            <div class="col-md-2 pr-1">
+                                {{ removesettings.submit3(class="btn btn-fill btn-primary") }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--RENAME DEVICE-->
+    <div class="row">
+        <div class="col-md-10">
+            <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Rename Device</h4>
+            </div>
+            <div class="card-body">
+                <form role="form" method="post" action="">
+                    {{ renamedevice.hidden_tag() }}
+                    <div class="row">
+                        <div class="col-md-1 pr-1"></div>
+
+                        <div class="col-md-3 pr-1">
+                            <div class="form-group">
+                                <label>Device</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                {{ renamedevice.device(placeholder="Device", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-1 pr-1"></div>
+
+                        <div class="col-md-3 pr-1">
+                            <div class="form-group">
+                                <label>New Name</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                {{ renamedevice.newname(placeholder="New Name", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-1 pr-1"></div>
+                        <div class="col-md-2 pr-1">
+                            {{ renamedevice.submit4(class="btn btn-fill btn-primary") }}
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
 </div>

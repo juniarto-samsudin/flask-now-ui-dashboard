@@ -16,7 +16,7 @@
                     <table class="table">
                         <thead class="text-primary">
                         <th>
-                            UUID
+                            No.
                         </th>
                         <th>
                             Device Name
@@ -24,14 +24,14 @@
                         <th>
                             Device Type
                         </th>
-                        <th>
-                            Online Status
+                        <th align="center">
+                            Online
+                        </th>
+                        <th align="center">
+                            IP
                         </th>
                         <th>
-                            IP Address
-                        </th>
-                        <th>
-                            Application Name
+                            Fleet
                         </th>
                         <th>
                             Deployed Image
@@ -41,7 +41,7 @@
                             {% for device in msg %}
                             <tr>
                                 <td>
-                                    {{ device.uuid[:7] }}
+                                    {{ loop.index }}
                                 </td>
                                 <td>
                                     {{ device.device_name}}
@@ -49,11 +49,19 @@
                                 <td>
                                     {{ device.device_type }}
                                 </td>
-                                <td>
-                                    {{ device.is_online }}
+                                <td align="center">
+                                    {% if device.is_online == True %}
+                                        <i class="now-ui-icons ui-1_check"></i>
+                                    {% else %}
+                                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                                    {% endif %}
                                 </td>
-                                <td>
-                                    {{ device.ip_address }}
+                                <td align="left">
+                                    {% if device.is_online == True %}
+                                        {{ device.ip_address }}
+                                    {% else %}
+                                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {{ device.app_name }}
