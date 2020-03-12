@@ -15,7 +15,7 @@ from werkzeug.exceptions import HTTPException, NotFound, abort
 # App modules
 from app        import app, lm, db, bc
 from app.models import User, DeploymentLatest
-from app.forms  import LoginForm, RegisterForm, DeployAppForm, QueryDevEnvVarsForm, SetDevEnvVarsForm, RemoveDevEnvVarsForm, RenameDevNameForm
+from app.forms  import LoginForm, RegisterForm, DeployAppForm, QueryDevEnvVarsForm, SetDevEnvVarsForm, RemoveDevEnvVarsForm, RenameDevNameForm, ShutdownDevForm
 
 # From old dashboard
 import os
@@ -320,7 +320,29 @@ def index(path):
                 print(responseJSON)
                 return render_template('layouts/default.html',
                                        content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, renamedevice=renamedevice, page="device-env-vars", renamemsg=responseJSON))
+        elif (path=="device-operation.html"):
+            #GET DEVICE LIST
+            PROVREST = PROVURL + 'devs-apps-simple'
+            response = requests.get(PROVREST)
+            responseJSON = json.loads(response.content)
 
+            choiceDevList = []
+            choiceAppList = []
+
+            for device in responseJSON:
+                choiceDevTuple = (device['uuid'], device['device_name'])
+                choiceAppTuple = (device['app_id'], device['app_name'])
+                choiceDevList.append(choiceDevTuple)
+                if choiceAppTuple not in choiceAppList:
+                    choiceAppList.append(choiceAppTuple)
+
+            ShutdownForm = ShutdownDevForm(request.form)
+            ShutdownForm.device.choices = choiceDevList
+            ShutdownForm.application.choices = choiceAppList
+
+            if request.method == 'GET':
+                return render_template('layouts/default.html',
+                                       content=render_template('pages/device-operation.html', ShutdownForm=ShutdownForm, page="device-operation"))
     except:
         
         return render_template('layouts/auth-default.html',

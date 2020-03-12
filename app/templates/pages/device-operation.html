@@ -1,0 +1,67 @@
+<div class="panel-header panel-header-sm">
+ </div>
+ <div id="divCheckbox" style="display: none;">
+     {% if page %}
+     <label id="page">{{ page|safe }}</label>
+     {% endif %}
+ </div>
+<div class="content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+                <div class="card-header">
+                    <h4 class="card-title">Device Shutdown</h4>
+                </div>
+                <div clas="card-body">
+                    <form role="form" method="post" action="">
+                        {{ ShutdownForm.hidden_tag() }}
+                        <div class="row">
+                            <div class="col-md-1 pr-1"></div>
+
+                            <div class="col-md-3 pr-1">
+                                <div class="form-group">
+                                    <label>Device</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 pr-1">
+                                <div class="form-group">
+                                    {{ ShutdownForm.device(placeholder="Device", class="form-control") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1 pr-1"></div>
+
+                            <div class="col-md-3 pr-1">
+                                <div class="form-group">
+                                    <label>Application</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 pr-1">
+                                <div class="form-group">
+                                    {{ ShutdownForm.application(placeholder="Device", class="form-control") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1 pr-1"></div>
+                            <div class="col-md-2 pr-1">
+                                {{ ShutdownForm.submit1(class="btn btn-fill btn-primary") }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

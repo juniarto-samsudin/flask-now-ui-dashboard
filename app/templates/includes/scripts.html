@@ -47,6 +47,11 @@ $(document).ready(function(){
       $("#ApplicationDeployment").removeClass("active")
       $("#DeploymentStatus").removeClass("active")
       $("#DeviceEnvVars").addClass("active")
+    } else if ($('#page').text() == "device-operation") {
+      $("#ApplicationDeployment").removeClass("active")
+      $("#DeploymentStatus").removeClass("active")
+      $("#DeviceEnvVars").removeClass("active")
+      $("#DeviceOperations").addClass("active")
     }
 });
 

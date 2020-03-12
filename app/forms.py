@@ -41,3 +41,8 @@ class RenameDevNameForm(FlaskForm):
 	device = SelectField(u'Device', choices=[('cpp','C++')])
 	newname = StringField(u'New Name', validators=[DataRequired()])
 	submit4 = SubmitField(u'Rename')
+
+class ShutdownDevForm(FlaskForm):
+	device = SelectField(u'Device', choices=[('cpp','C++')])
+	application = SelectField(u'Application', choices=[('cpp','C++')])
+	submit1 = SubmitField(u'Shutdown')
