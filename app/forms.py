@@ -34,7 +34,7 @@ class SetDevEnvVarsForm(FlaskForm):
 	submit2 = SubmitField(u'Set')
 
 class RemoveDevEnvVarsForm(FlaskForm):
-	id = StringField(u'Id', validators=[DataRequired])
+	id = StringField(u'Id', validators=[DataRequired()])
 	submit3 = SubmitField(u'Remove')
 
 class RenameDevNameForm(FlaskForm):
