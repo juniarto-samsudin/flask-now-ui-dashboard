@@ -123,7 +123,7 @@ def login():
 def index(path):
 
     if not current_user.is_authenticated:
-        return redirect(url_for('login'))
+        return redirect(url_for('login',_external=True))
 
     content = None
 
