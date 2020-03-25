@@ -123,7 +123,8 @@ def login():
 def index(path):
 
     if not current_user.is_authenticated:
-        return redirect(url_for('login',_external=True))
+        #return redirect(url_for('login',_external=True))
+        return redirect('https://vaultsonchain.com:8080/login.html')
 
     content = None
 
