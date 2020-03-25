@@ -34,8 +34,10 @@ def load_user(user_id):
 @app.route('/logout.html')
 def logout():
     logout_user()
-    #return redirect(url_for('index'))
-    return redirect("https://vaultsonchain.com:8080")
+    NGINXURL = os.getenv('NGINX_URL')
+    if (NGINXURL == None):
+        return redirect(url_for('index'))
+    return redirect(NGINXURL)
 
 # Register a new user
 @app.route('/register.html', methods=['GET', 'POST'])
@@ -109,8 +111,10 @@ def login():
             #if bc.check_password_hash(user.password, password):
             if user.password == password:
                 login_user(user)
-                #return redirect(url_for('index'))
-                return redirect('https://vaultsonchain.com:8080')
+                NGINXURL = os.getenv('NGINX_URL')
+                if (NGINXURL == None):
+                    return redirect(url_for('index'))
+                return redirect(NGINXURL)
             else:
                 msg = "Wrong password. Please try again."
         else:
@@ -125,8 +129,10 @@ def login():
 def index(path):
 
     if not current_user.is_authenticated:
-        #return redirect(url_for('login',_external=True))
-        return redirect('https://vaultsonchain.com:8080/login.html')
+        NGINXURL = os.getenv('NGINX_URL')
+        if (NGINXURL == None):
+            return redirect(url_for('login'))
+        return redirect(NGINXURL + 'login.html')
 
     content = None
 
