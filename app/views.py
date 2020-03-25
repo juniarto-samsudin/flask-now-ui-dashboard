@@ -22,7 +22,14 @@ import os
 import simplejson as json
 import requests
 
-
+'''
+ * You may think you know what the following code does.
+ * But you dont. Trust me.
+ * Fiddle with it, and youll spend many a sleepless
+ * night cursing the moment you thought youd be clever
+ * enough to "optimize" the code below.
+ * Now close this file and go play with something else.
+ '''
 TOKEN = "iIJZep7sYmgERjqxZ5sIBWnzcOkwUe1Q"
 
 # provide login manager with load_user callback
@@ -157,6 +164,14 @@ def index(path):
 
             apps = DeploymentLatest.query.all() #Get from deployment-database
             #add image and release keys to the responseJSON
+            #Dear Maintainer:
+            #Once you are done trying to 'optimize' the routine below
+            #most probably using for loop
+            #please increment the following counter below
+            #how much time you wasted here
+            #
+            #total_time_wasted_here = 1
+
             i = 0
             j = 0
             while i < len(responseJSON):
@@ -180,6 +195,9 @@ def index(path):
 
             choiceAppList = []
 
+            #Since you think you are smarter than anyone in the universe
+            #Please challenge yourself to change the while loop below
+            #using for loop
             i = 0
             while i < len(responseJSON):
                 print (responseJSON[i])
@@ -194,6 +212,9 @@ def index(path):
 
             choiceImageList = []
 
+            #Dear Code Sanitizer:
+            #Please use your free time to optimize the following
+            #Routine with for loop
             i = 0
             while i < len(responseJSON):
                 print (responseJSON[i])
@@ -364,6 +385,8 @@ def sitemap():
 
 
 # FROM OLD DASHBOARD
+# DEAR MAINTAINER:
+# Please use your free time to sanitize the code below.
 '''
 config = None
 
