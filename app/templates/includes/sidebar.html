@@ -39,7 +39,6 @@
           </li>
 	  -->
           <li id="DeploymentStatus">
-            <!--<a href="/device-status.html">-->
             <a href="{{ url_for('index', path='device-status.html') }}">
               <i class="now-ui-icons design_bullet-list-67"></i>
               <p>Deployment Status</p>
@@ -47,7 +46,7 @@
           </li>
 
           <li id="ApplicationDeployment">
-            <a href="/app-deployment.html">
+              <a href="{{ url_for('index', path='app-deployment.html') }}">
               <i class="now-ui-icons education_atom"></i>
               <p>Fleet Deployment</p>
             </a>
