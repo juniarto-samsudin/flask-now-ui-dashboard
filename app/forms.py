@@ -37,10 +37,15 @@ class RemoveDevEnvVarsForm(FlaskForm):
 	id = StringField(u'Id', validators=[DataRequired()])
 	submit3 = SubmitField(u'Remove')
 
+class UpdateDevEnvVarsForm(FlaskForm):
+	id = StringField(u'Id', validators=[DataRequired()])
+	value = StringField(u'value', validators=[DataRequired()])
+	submit4 = SubmitField(u'Update')
+
 class RenameDevNameForm(FlaskForm):
 	device = SelectField(u'Device', choices=[('cpp','C++')])
 	newname = StringField(u'New Name', validators=[DataRequired()])
-	submit4 = SubmitField(u'Rename')
+	submit5 = SubmitField(u'Rename')
 
 class ShutdownDevForm(FlaskForm):
 	device = SelectField(u'Device', choices=[('cpp','C++')])

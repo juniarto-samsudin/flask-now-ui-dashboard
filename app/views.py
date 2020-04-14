@@ -15,7 +15,7 @@ from werkzeug.exceptions import HTTPException, NotFound, abort
 # App modules
 from app        import app, lm, db, bc
 from app.models import User, DeploymentLatest
-from app.forms  import LoginForm, RegisterForm, DeployAppForm, QueryDevEnvVarsForm, SetDevEnvVarsForm, RemoveDevEnvVarsForm, RenameDevNameForm, ShutdownDevForm
+from app.forms  import LoginForm, RegisterForm, DeployAppForm, QueryDevEnvVarsForm, SetDevEnvVarsForm, RemoveDevEnvVarsForm, RenameDevNameForm, ShutdownDevForm, UpdateDevEnvVarsForm
 
 # From old dashboard
 import os
@@ -300,13 +300,16 @@ def index(path):
             #Declare RemoveSettings
             removesettings = RemoveDevEnvVarsForm(request.form)
 
+            #Declare UpdateSettings
+            updatesettings = UpdateDevEnvVarsForm(request.form)
+
             #Declare RenameDevice
             renamedevice  = RenameDevNameForm(request.form)
             renamedevice.device.choices = choiceDevList
 
             if request.method == 'GET':
                 return render_template('layouts/default.html',
-                                   content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, renamedevice=renamedevice, page="device-env-vars"))
+                                   content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, updatesettings=updatesettings,  renamedevice=renamedevice, page="device-env-vars"))
 
 
             if  (query.submit1.data and query.validate()):
@@ -317,7 +320,7 @@ def index(path):
                 responseJSON = json.loads(response.content)
                 print(responseJSON)
                 return render_template('layouts/default.html',
-                                       content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, renamedevice=renamedevice, page="device-env-vars", msg=responseJSON))
+                                       content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, updatesettings=updatesettings, renamedevice=renamedevice, page="device-env-vars", msg=responseJSON))
 
             elif  (settings.submit2.data and settings.validate()):
                 session['device'] = settings.device.data
@@ -329,7 +332,7 @@ def index(path):
                 responseJSON = json.loads(response.content)
                 print(responseJSON)
                 return render_template('layouts/default.html',
-                                       content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, renamedevice=renamedevice,  page="device-env-vars",createmsg=responseJSON))
+                                       content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, updatesettings=updatesettings, renamedevice=renamedevice,  page="device-env-vars",createmsg=responseJSON))
 
             elif (removesettings.submit3.data and removesettings.validate()):
                 session['id'] = removesettings.id.data
@@ -339,7 +342,18 @@ def index(path):
                 responseJSON = json.loads(response.content)
                 print(responseJSON)
                 return render_template('layouts/default.html',
-                                       content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, renamedevice=renamedevice,  page="device-env-vars", removemsg=responseJSON ))
+                                       content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, updatesettings=updatesettings, renamedevice=renamedevice,  page="device-env-vars", removemsg=responseJSON ))
+            elif (updatesettings.submit4.data and updatesettings.validate()):
+                session['id'] = updatesettings.id.data
+                session['value'] = updatesettings.value.data
+                PROVREST = PROVURL + "dev-env-vars" + "/update/" + session['id'] + '/' + session['value']
+                print(PROVREST)
+                response = requests.post(PROVREST)
+                responseJSON = json.loads(response.content)
+                print(responseJSON)
+                return render_template('layouts/default.html',
+                                       content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, updatesettings=updatesettings,  renamedevice=renamedevice,  page="device-env-vars", removemsg=responseJSON ))
+
             else:
                 session['device']  = renamedevice.device.data
                 session['newname'] = renamedevice.newname.data
