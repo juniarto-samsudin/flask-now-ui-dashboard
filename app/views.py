@@ -387,6 +387,27 @@ def index(path):
             if request.method == 'GET':
                 return render_template('layouts/default.html',
                                        content=render_template('pages/device-operation.html', ShutdownForm=ShutdownForm, page="device-operation"))
+
+            if (ShutdownForm.submit1.data):
+                session['device'] = ShutdownForm.device.data
+                session['application'] = ShutdownForm.application.data
+                PROVREST = PROVURL + "device/shutdown" + "/" + session['device'] + '/' + session['application']
+                print (PROVREST)
+                response = requests.get(PROVREST)
+                print (response.content)
+                responseJSON = json.loads(response.content)
+                print(responseJSON)
+                if (responseJSON['Data'] == 'OK'):
+                    print("SHUTDOWN OK")
+                    message = "Shutdown of device {} of fleet {} SUCCESSFUL"
+                    flash(message.format(session['device'], session['application']),'shutdown')
+                else:
+                    message = "Shutdown of device {} of fleet {} FAILED"
+                    flash(message.format(session['device'], session['application']), 'shutdown')
+                    print("SHUTDOWN FAILED")
+
+                return render_template('layouts/default.html',
+                                       content=render_template('pages/device-operation.html', ShutdownForm=ShutdownForm, page="device-operation"))
     except:
         
         return render_template('layouts/auth-default.html',

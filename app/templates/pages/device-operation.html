@@ -9,12 +9,18 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card">
-                {% for message in get_flashed_messages() %}
+                <!--{% for message in get_flashed_messages() %}-->
+                {% with shutdown = get_flashed_messages(category_filter=["shutdown"]) %}
                 <div class="alert alert-warning">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ message }}
+                    {% if shutdown %}
+                        {% for message in shutdown %}
+                            {{ message }}
+                        {% endfor %}
+                    {% endif %}
                 </div>
-                {% endfor %}
+                {% endwith %}
+                <!--{% endfor %}-->
                 <div class="card-header">
                     <h4 class="card-title">Device Shutdown</h4>
                 </div>
