@@ -325,7 +325,9 @@ def index(path):
             elif  (settings.submit2.data and settings.validate()):
                 session['device'] = settings.device.data
                 session['envvar'] = settings.envvar.data
-                session['value']  = settings.value.data
+                #Replace slash (/) with ******
+                session['value']  = settings.value.data.replace("/","*****")
+
                 PROVREST = PROVURL + "dev-env-vars" + "/" + session['device'] + '/' + session['envvar'] + '/' + session['value']
                 print (PROVREST)
                 response = requests.post(PROVREST)
