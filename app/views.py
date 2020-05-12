@@ -347,7 +347,9 @@ def index(path):
                                        content=render_template('pages/'+path, form=query, settings=settings, removesettings=removesettings, updatesettings=updatesettings, renamedevice=renamedevice,  page="device-env-vars", removemsg=responseJSON ))
             elif (updatesettings.submit4.data and updatesettings.validate()):
                 session['id'] = updatesettings.id.data
-                session['value'] = updatesettings.value.data
+                #session['value'] = updatesettings.value.data
+                # Replace slash (/) with ******
+                session['value'] = updatesettings.value.data.replace("/", "*****")
                 PROVREST = PROVURL + "dev-env-vars" + "/update/" + session['id'] + '/' + session['value']
                 print(PROVREST)
                 response = requests.post(PROVREST)
